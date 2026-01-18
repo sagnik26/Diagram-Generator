@@ -1,0 +1,22 @@
+.dotted-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  /* Dotted background pattern like draw.io */
+  background-color: #ffffff;
+  background-image: radial-gradient(circle, #cbd5e0 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-position: 0 0;
+  /* Ensure it doesn't interfere with interactions */
+  user-select: none;
+  -webkit-user-select: none;
+  /* Make it cover the entire canvas area */
+  min-width: 100%;
+  min-height: 100%;
+}

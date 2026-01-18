@@ -6,6 +6,7 @@ import { BorderWidthProvider, useBorderWidthContext } from './contexts/BorderWid
 import CustomToolbar from './components/CustomToolbar'
 import ConnectionPoints from './components/ConnectionPoints'
 import TextEditor from './components/TextEditor'
+import DottedBackground from './components/DottedBackground'
 import './App.css'
 
 // Map border width (1-10) to tldraw size ('s', 'm', 'l', 'xl')
@@ -381,6 +382,7 @@ function AppContentInner() {
         onDragOver={handleDragOver}
         onDrop={handleDrop}
       >
+        <DottedBackground />
         <Tldraw
           onMount={(editor) => {
             setEditor(editor)

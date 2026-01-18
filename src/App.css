@@ -17,6 +17,8 @@
   will-change: transform;
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
+  /* White background for the container */
+  background-color: #ffffff;
 }
 
 .canvas-container .tl-container {
@@ -31,4 +33,14 @@
   position: relative;
   /* Smooth rendering */
   will-change: transform;
+}
+
+/* Ensure tldraw background is transparent so our dotted background shows through */
+.canvas-container .tl-background {
+  background-color: transparent !important;
+}
+
+/* Make sure the page container is transparent */
+.canvas-container [class*="tl-page"] {
+  background-color: transparent;
 }
