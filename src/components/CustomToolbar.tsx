@@ -14,6 +14,7 @@ import {
   Minus as MinusIcon,
   Plus,
   Trash2,
+  Triangle,
 } from 'lucide-react'
 import './CustomToolbar.css'
 
@@ -144,6 +145,11 @@ function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolb
     editor.setCurrentTool('text')
   }, [editor])
 
+  const handleTriangle = useCallback(() => {
+    if (!editor) return
+    editor.setCurrentTool('geo')
+  }, [editor])
+
   const handleDelete = useCallback(() => {
     if (!editor) return
     
@@ -208,6 +214,16 @@ function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolb
           >
             <Type size={20} />
             <span>Text</span>
+          </button>
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'triangle')}
+            onClick={handleTriangle}
+            title="Triangle - Click to select tool or drag to canvas"
+          >
+            <Triangle size={20} />
+            <span>Triangle</span>
           </button>
         </div>
       </div>

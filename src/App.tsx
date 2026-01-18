@@ -351,6 +351,23 @@ function AppContentInner() {
             autoSize: true,
           },
         }
+      } else if (shapeType === 'triangle') {
+        shapeDef = {
+          id: shapeId,
+          type: 'geo',
+          x: point.x - 50,
+          y: point.y - 50,
+          props: {
+            geo: 'triangle',
+            w: 100,
+            h: 100,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: '', // Enable text on shape - will be editable on double-click
+          },
+        }
       } else {
         return
       }
