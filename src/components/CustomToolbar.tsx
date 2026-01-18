@@ -42,6 +42,9 @@ import {
   BarChart,
   Brain,
   GitBranch,
+  ChevronDown,
+  ChevronUp,
+  Workflow,
 } from 'lucide-react'
 import './CustomToolbar.css'
 
@@ -55,6 +58,29 @@ interface CustomToolbarProps {
 function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolbarProps) {
   const { editor } = useEditorContext()
   const { borderWidth, setBorderWidth } = useBorderWidthContext()
+  
+  // State for collapsible sections
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
+    shapes: true,
+    database: false,
+    serviceLayer: false,
+    messaging: false,
+    infrastructure: false,
+    clientLayer: false,
+    monitoring: false,
+    aiMl: false,
+    borderWidth: false,
+    actions: false,
+    file: false,
+    export: false,
+  })
+
+  const toggleSection = useCallback((section: string) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }))
+  }, [])
   const [hasSelection, setHasSelection] = useState(false)
 
   // Track selection state to enable/disable delete button - optimized
@@ -220,9 +246,26 @@ function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolb
 
   return (
     <div className="custom-toolbar">
+      <div className="toolbar-brand">
+        <div className="toolbar-brand-container">
+          <Workflow className="toolbar-brand-icon" size={38} />
+          <h1 className="toolbar-brand-name">Archflow</h1>
+        </div>
+      </div>
       <div className="toolbar-section">
-        <h3 className="toolbar-title">Shapes</h3>
-        <div className="toolbar-buttons">
+        <div 
+          className="toolbar-section-header"
+          onClick={() => toggleSection('shapes')}
+        >
+          <h3 className="toolbar-title">Shapes</h3>
+          {expandedSections.shapes ? (
+            <ChevronUp size={16} />
+          ) : (
+            <ChevronDown size={16} />
+          )}
+        </div>
+        {expandedSections.shapes && (
+          <div className="toolbar-buttons">
           <button
             className="toolbar-button"
             draggable
@@ -283,14 +326,26 @@ function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolb
             <Triangle size={20} />
             <span>Triangle</span>
           </button>
-        </div>
+          </div>
+        )}
       </div>
 
       <div className="toolbar-divider" />
 
       <div className="toolbar-section">
-        <h3 className="toolbar-title">Database</h3>
-        <div className="toolbar-buttons">
+        <div 
+          className="toolbar-section-header"
+          onClick={() => toggleSection('database')}
+        >
+          <h3 className="toolbar-title">Database</h3>
+          {expandedSections.database ? (
+            <ChevronUp size={16} />
+          ) : (
+            <ChevronDown size={16} />
+          )}
+        </div>
+        {expandedSections.database && (
+          <div className="toolbar-buttons">
           <button
             className="toolbar-button"
             draggable
@@ -351,14 +406,26 @@ function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolb
             <Search size={20} />
             <span>Search Engine</span>
           </button>
-        </div>
+          </div>
+        )}
       </div>
 
       <div className="toolbar-divider" />
 
       <div className="toolbar-section">
-        <h3 className="toolbar-title">Service Layer</h3>
-        <div className="toolbar-buttons">
+        <div 
+          className="toolbar-section-header"
+          onClick={() => toggleSection('serviceLayer')}
+        >
+          <h3 className="toolbar-title">Service Layer</h3>
+          {expandedSections.serviceLayer ? (
+            <ChevronUp size={16} />
+          ) : (
+            <ChevronDown size={16} />
+          )}
+        </div>
+        {expandedSections.serviceLayer && (
+          <div className="toolbar-buttons">
           <button
             className="toolbar-button"
             draggable
@@ -429,14 +496,26 @@ function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolb
             <CreditCard size={20} />
             <span>Payment Gateway</span>
           </button>
-        </div>
+          </div>
+        )}
       </div>
 
       <div className="toolbar-divider" />
 
       <div className="toolbar-section">
-        <h3 className="toolbar-title">Messaging & Streaming</h3>
-        <div className="toolbar-buttons">
+        <div 
+          className="toolbar-section-header"
+          onClick={() => toggleSection('messaging')}
+        >
+          <h3 className="toolbar-title">Messaging & Streaming</h3>
+          {expandedSections.messaging ? (
+            <ChevronUp size={16} />
+          ) : (
+            <ChevronDown size={16} />
+          )}
+        </div>
+        {expandedSections.messaging && (
+          <div className="toolbar-buttons">
           <button
             className="toolbar-button"
             draggable
@@ -477,14 +556,26 @@ function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolb
             <Radio size={20} />
             <span>Event Bus</span>
           </button>
-        </div>
+          </div>
+        )}
       </div>
 
       <div className="toolbar-divider" />
 
       <div className="toolbar-section">
-        <h3 className="toolbar-title">Infrastructure</h3>
-        <div className="toolbar-buttons">
+        <div 
+          className="toolbar-section-header"
+          onClick={() => toggleSection('infrastructure')}
+        >
+          <h3 className="toolbar-title">Infrastructure</h3>
+          {expandedSections.infrastructure ? (
+            <ChevronUp size={16} />
+          ) : (
+            <ChevronDown size={16} />
+          )}
+        </div>
+        {expandedSections.infrastructure && (
+          <div className="toolbar-buttons">
           <button
             className="toolbar-button"
             draggable
@@ -535,14 +626,26 @@ function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolb
             <Box size={20} />
             <span>Container</span>
           </button>
-        </div>
+          </div>
+        )}
       </div>
 
       <div className="toolbar-divider" />
 
       <div className="toolbar-section">
-        <h3 className="toolbar-title">Client Layer</h3>
-        <div className="toolbar-buttons">
+        <div 
+          className="toolbar-section-header"
+          onClick={() => toggleSection('clientLayer')}
+        >
+          <h3 className="toolbar-title">Client Layer</h3>
+          {expandedSections.clientLayer ? (
+            <ChevronUp size={16} />
+          ) : (
+            <ChevronDown size={16} />
+          )}
+        </div>
+        {expandedSections.clientLayer && (
+          <div className="toolbar-buttons">
           <button
             className="toolbar-button"
             draggable
@@ -593,14 +696,26 @@ function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolb
             <Radio size={20} />
             <span>IoT Device</span>
           </button>
-        </div>
+          </div>
+        )}
       </div>
 
       <div className="toolbar-divider" />
 
       <div className="toolbar-section">
-        <h3 className="toolbar-title">Monitoring & Operations</h3>
-        <div className="toolbar-buttons">
+        <div 
+          className="toolbar-section-header"
+          onClick={() => toggleSection('monitoring')}
+        >
+          <h3 className="toolbar-title">Monitoring & Operations</h3>
+          {expandedSections.monitoring ? (
+            <ChevronUp size={16} />
+          ) : (
+            <ChevronDown size={16} />
+          )}
+        </div>
+        {expandedSections.monitoring && (
+          <div className="toolbar-buttons">
           <button
             className="toolbar-button"
             draggable
@@ -641,14 +756,26 @@ function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolb
             <BarChart size={20} />
             <span>Analytics</span>
           </button>
-        </div>
+          </div>
+        )}
       </div>
 
       <div className="toolbar-divider" />
 
       <div className="toolbar-section">
-        <h3 className="toolbar-title">AI/ML</h3>
-        <div className="toolbar-buttons">
+        <div 
+          className="toolbar-section-header"
+          onClick={() => toggleSection('aiMl')}
+        >
+          <h3 className="toolbar-title">AI/ML</h3>
+          {expandedSections.aiMl ? (
+            <ChevronUp size={16} />
+          ) : (
+            <ChevronDown size={16} />
+          )}
+        </div>
+        {expandedSections.aiMl && (
+          <div className="toolbar-buttons">
           <button
             className="toolbar-button"
             draggable
@@ -669,14 +796,26 @@ function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolb
             <GitBranch size={20} />
             <span>ML Pipeline</span>
           </button>
-        </div>
+          </div>
+        )}
       </div>
 
       <div className="toolbar-divider" />
 
       <div className="toolbar-section">
-        <h3 className="toolbar-title">Border Width</h3>
-        <div className="toolbar-buttons">
+        <div 
+          className="toolbar-section-header"
+          onClick={() => toggleSection('borderWidth')}
+        >
+          <h3 className="toolbar-title">Border Width</h3>
+          {expandedSections.borderWidth ? (
+            <ChevronUp size={16} />
+          ) : (
+            <ChevronDown size={16} />
+          )}
+        </div>
+        {expandedSections.borderWidth && (
+          <div className="toolbar-buttons">
           <div className="border-width-controls">
             <button
               className="toolbar-button border-width-button"
@@ -698,14 +837,26 @@ function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolb
               <Plus size={16} />
             </button>
           </div>
-        </div>
+          </div>
+        )}
       </div>
 
       <div className="toolbar-divider" />
 
       <div className="toolbar-section">
-        <h3 className="toolbar-title">Actions</h3>
-        <div className="toolbar-buttons">
+        <div 
+          className="toolbar-section-header"
+          onClick={() => toggleSection('actions')}
+        >
+          <h3 className="toolbar-title">Actions</h3>
+          {expandedSections.actions ? (
+            <ChevronUp size={16} />
+          ) : (
+            <ChevronDown size={16} />
+          )}
+        </div>
+        {expandedSections.actions && (
+          <div className="toolbar-buttons">
           <button
             className="toolbar-button toolbar-button-danger"
             onClick={handleDelete}
@@ -715,14 +866,26 @@ function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolb
             <Trash2 size={20} />
             <span>Delete</span>
           </button>
-        </div>
+          </div>
+        )}
       </div>
 
       <div className="toolbar-divider" />
 
       <div className="toolbar-section">
-        <h3 className="toolbar-title">File</h3>
-        <div className="toolbar-buttons">
+        <div 
+          className="toolbar-section-header"
+          onClick={() => toggleSection('file')}
+        >
+          <h3 className="toolbar-title">File</h3>
+          {expandedSections.file ? (
+            <ChevronUp size={16} />
+          ) : (
+            <ChevronDown size={16} />
+          )}
+        </div>
+        {expandedSections.file && (
+          <div className="toolbar-buttons">
           <button
             className="toolbar-button"
             onClick={onSave}
@@ -739,14 +902,26 @@ function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolb
             <FolderOpen size={20} />
             <span>Load</span>
           </button>
-        </div>
+          </div>
+        )}
       </div>
 
       <div className="toolbar-divider" />
 
       <div className="toolbar-section">
-        <h3 className="toolbar-title">Export</h3>
-        <div className="toolbar-buttons">
+        <div 
+          className="toolbar-section-header"
+          onClick={() => toggleSection('export')}
+        >
+          <h3 className="toolbar-title">Export</h3>
+          {expandedSections.export ? (
+            <ChevronUp size={16} />
+          ) : (
+            <ChevronDown size={16} />
+          )}
+        </div>
+        {expandedSections.export && (
+          <div className="toolbar-buttons">
           <button
             className="toolbar-button"
             onClick={onExportPNG}
@@ -763,7 +938,8 @@ function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolb
             <Download size={20} />
             <span>SVG</span>
           </button>
-        </div>
+          </div>
+        )}
       </div>
     </div>
   )
