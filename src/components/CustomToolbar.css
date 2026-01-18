@@ -1,0 +1,132 @@
+.custom-toolbar {
+  width: 250px;
+  height: 100vh;
+  background: #f8f9fa;
+  border-right: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.05);
+  padding: 16px;
+  gap: 16px;
+}
+
+.toolbar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.toolbar-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0;
+  padding: 0 4px;
+}
+
+.toolbar-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.toolbar-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  cursor: grab;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  color: #333;
+  text-align: left;
+  width: 100%;
+  user-select: none;
+}
+
+.toolbar-button:active {
+  cursor: grabbing;
+}
+
+.toolbar-button:hover {
+  background: #f0f0f0;
+  border-color: #007bff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+}
+
+.toolbar-button:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 123, 255, 0.1);
+}
+
+.toolbar-button svg {
+  flex-shrink: 0;
+  color: #333;
+}
+
+.toolbar-divider {
+  height: 1px;
+  background: #e0e0e0;
+  margin: 8px 0;
+}
+
+.border-width-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px;
+  background: #f8f9fa;
+  border-radius: 6px;
+}
+
+.border-width-button {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: auto;
+}
+
+.border-width-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.border-width-display {
+  flex: 1;
+  text-align: center;
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.toolbar-button-danger {
+  background: #fff5f5;
+  border-color: #ff4444;
+  color: #ff4444;
+}
+
+.toolbar-button-danger:hover:not(:disabled) {
+  background: #ffe0e0;
+  border-color: #cc0000;
+  color: #cc0000;
+}
+
+.toolbar-button-danger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f8f9fa;
+  border-color: #e0e0e0;
+  color: #999;
+}
