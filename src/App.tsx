@@ -7,6 +7,17 @@ import CustomToolbar from './components/CustomToolbar'
 import ConnectionPoints from './components/ConnectionPoints'
 import TextEditor from './components/TextEditor'
 import DottedBackground from './components/DottedBackground'
+import { CylinderShapeUtil } from './shapes/CylinderShape'
+import { HardDriveShapeUtil } from './shapes/HardDriveShape'
+import { SearchShapeUtil } from './shapes/SearchShape'
+import { BoxShapeUtil } from './shapes/BoxShape'
+import { MicroserviceShapeUtil } from './shapes/MicroserviceShape'
+import { ServerShapeUtil } from './shapes/ServerShape'
+import { ApiGatewayShapeUtil } from './shapes/ApiGatewayShape'
+import { LoadBalancerShapeUtil } from './shapes/LoadBalancerShape'
+import { AuthenticationServiceShapeUtil } from './shapes/AuthenticationServiceShape'
+import { NotificationServiceShapeUtil } from './shapes/NotificationServiceShape'
+import { PaymentGatewayShapeUtil } from './shapes/PaymentGatewayShape'
 import './App.css'
 
 // Map border width (1-10) to tldraw size ('s', 'm', 'l', 'xl')
@@ -26,7 +37,7 @@ function setupTextEditing(editor: any) {
       margin: 0,
     })
 
-    if (hitShape && (hitShape.type === 'geo' || hitShape.type === 'text')) {
+    if (hitShape && (hitShape.type === 'geo' || hitShape.type === 'text' || hitShape.type === 'cylinder' || hitShape.type === 'hard-drive' || hitShape.type === 'search' || hitShape.type === 'box' || hitShape.type === 'microservice' || hitShape.type === 'server' || hitShape.type === 'api-gateway' || hitShape.type === 'load-balancer' || hitShape.type === 'authentication-service' || hitShape.type === 'notification-service' || hitShape.type === 'payment-gateway')) {
       editor.setEditingShape(hitShape.id)
       editor.setCurrentTool('select')
     }
@@ -91,7 +102,7 @@ function setupTextEditing(editor: any) {
     rafId = requestAnimationFrame(() => {
       const shapes = editor.getCurrentPageShapes()
       shapes.forEach((shape: any) => {
-        if (shape.type === 'geo') {
+        if (shape.type === 'geo' || shape.type === 'cylinder' || shape.type === 'hard-drive' || shape.type === 'search' || shape.type === 'box' || shape.type === 'microservice' || shape.type === 'server' || shape.type === 'api-gateway' || shape.type === 'load-balancer' || shape.type === 'authentication-service' || shape.type === 'notification-service' || shape.type === 'payment-gateway') {
           // Store original border size if not already stored
           if (!originalBorderSizes.has(shape.id)) {
             originalBorderSizes.set(shape.id, shape.props.size || 'm')
@@ -368,6 +379,227 @@ function AppContentInner() {
             text: '', // Enable text on shape - will be editable on double-click
           },
         }
+      } else if (shapeType === 'database') {
+        // DATABASE: Custom cylinder shape, size 120x80
+        shapeDef = {
+          id: shapeId,
+          type: 'cylinder',
+          x: point.x - 60,
+          y: point.y - 40,
+          props: {
+            w: 120,
+            h: 80,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'Database',
+          },
+        }
+      } else if (shapeType === 'nosql-database') {
+        // NOSQL_DATABASE: Custom box shape, size 120x80
+        shapeDef = {
+          id: shapeId,
+          type: 'box',
+          x: point.x - 60,
+          y: point.y - 40,
+          props: {
+            w: 120,
+            h: 80,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'NoSQL DB',
+          },
+        }
+      } else if (shapeType === 'cache') {
+        // CACHE: Custom hard drive shape, size 100x100
+        shapeDef = {
+          id: shapeId,
+          type: 'hard-drive',
+          x: point.x - 50,
+          y: point.y - 50,
+          props: {
+            w: 100,
+            h: 100,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'Cache',
+          },
+        }
+      } else if (shapeType === 'storage') {
+        // STORAGE: Custom hard drive shape, size 120x80
+        shapeDef = {
+          id: shapeId,
+          type: 'hard-drive',
+          x: point.x - 60,
+          y: point.y - 40,
+          props: {
+            w: 120,
+            h: 80,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'Storage',
+          },
+        }
+      } else if (shapeType === 'data-warehouse') {
+        // DATA_WAREHOUSE: Custom cylinder shape, size 140x80
+        shapeDef = {
+          id: shapeId,
+          type: 'cylinder',
+          x: point.x - 70,
+          y: point.y - 40,
+          props: {
+            w: 140,
+            h: 80,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'Data Warehouse',
+          },
+        }
+      } else if (shapeType === 'search-engine') {
+        // SEARCH_ENGINE: Custom search shape, size 120x100
+        shapeDef = {
+          id: shapeId,
+          type: 'search',
+          x: point.x - 60,
+          y: point.y - 50,
+          props: {
+            w: 120,
+            h: 100,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'Search Engine',
+          },
+        }
+      } else if (shapeType === 'microservice') {
+        // MICROSERVICE: Custom microservice shape, size 140x80
+        shapeDef = {
+          id: shapeId,
+          type: 'microservice',
+          x: point.x - 70,
+          y: point.y - 40,
+          props: {
+            w: 140,
+            h: 80,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'Microservice',
+          },
+        }
+      } else if (shapeType === 'server') {
+        // SERVER: Custom server shape, size 140x80
+        shapeDef = {
+          id: shapeId,
+          type: 'server',
+          x: point.x - 70,
+          y: point.y - 40,
+          props: {
+            w: 140,
+            h: 80,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'Server',
+          },
+        }
+      } else if (shapeType === 'api-gateway') {
+        // API_GATEWAY: Custom API gateway shape (trapezoid), size 160x80
+        shapeDef = {
+          id: shapeId,
+          type: 'api-gateway',
+          x: point.x - 80,
+          y: point.y - 40,
+          props: {
+            w: 160,
+            h: 80,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'API Gateway',
+          },
+        }
+      } else if (shapeType === 'load-balancer') {
+        // LOAD_BALANCER: Custom load balancer shape (diamond), size 120x120
+        shapeDef = {
+          id: shapeId,
+          type: 'load-balancer',
+          x: point.x - 60,
+          y: point.y - 60,
+          props: {
+            w: 120,
+            h: 120,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'Load Balancer',
+          },
+        }
+      } else if (shapeType === 'authentication-service') {
+        // AUTHENTICATION_SERVICE: Custom authentication service shape, size 160x80
+        shapeDef = {
+          id: shapeId,
+          type: 'authentication-service',
+          x: point.x - 80,
+          y: point.y - 40,
+          props: {
+            w: 160,
+            h: 80,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'Auth Service',
+          },
+        }
+      } else if (shapeType === 'notification-service') {
+        // NOTIFICATION_SERVICE: Custom notification service shape, size 160x80
+        shapeDef = {
+          id: shapeId,
+          type: 'notification-service',
+          x: point.x - 80,
+          y: point.y - 40,
+          props: {
+            w: 160,
+            h: 80,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'Notification Service',
+          },
+        }
+      } else if (shapeType === 'payment-gateway') {
+        // PAYMENT_GATEWAY: Custom payment gateway shape, size 140x80
+        shapeDef = {
+          id: shapeId,
+          type: 'payment-gateway',
+          x: point.x - 70,
+          y: point.y - 40,
+          props: {
+            w: 140,
+            h: 80,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'Payment Gateway',
+          },
+        }
       } else {
         return
       }
@@ -401,6 +633,19 @@ function AppContentInner() {
       >
         <DottedBackground />
         <Tldraw
+          shapeUtils={[
+            CylinderShapeUtil, 
+            HardDriveShapeUtil, 
+            SearchShapeUtil, 
+            BoxShapeUtil,
+            MicroserviceShapeUtil,
+            ServerShapeUtil,
+            ApiGatewayShapeUtil,
+            LoadBalancerShapeUtil,
+            AuthenticationServiceShapeUtil,
+            NotificationServiceShapeUtil,
+            PaymentGatewayShapeUtil
+          ]}
           onMount={(editor) => {
             setEditor(editor)
             // Configure editor for connections

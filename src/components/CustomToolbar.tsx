@@ -15,6 +15,17 @@ import {
   Plus,
   Trash2,
   Triangle,
+  Database,
+  HardDrive,
+  Search,
+  Box,
+  Package,
+  Server,
+  Network,
+  Activity,
+  Lock,
+  Bell,
+  CreditCard,
 } from 'lucide-react'
 import './CustomToolbar.css'
 
@@ -87,26 +98,26 @@ function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolb
     // Update selected shapes with new border width
     const selectedShapes = editor.getSelectedShapes()
     if (selectedShapes.length > 0) {
-      const newSize = getSizeFromWidth(clampedWidth)
-      editor.batch(() => {
-        selectedShapes.forEach((shape) => {
-          if (shape.type === 'geo') {
-            // Mark this as a toolbar update to prevent constant width restoration
-            if ((editor as any).markToolbarUpdate) {
-              (editor as any).markToolbarUpdate(shape.id)
-            }
-            
-            editor.updateShape({
-              id: shape.id,
-              type: shape.type,
-              props: {
-                ...shape.props,
-                size: newSize, // This controls border width in tldraw
-              },
+            const newSize = getSizeFromWidth(clampedWidth)
+            editor.batch(() => {
+              selectedShapes.forEach((shape) => {
+                if (shape.type === 'geo' || shape.type === 'cylinder' || shape.type === 'hard-drive' || shape.type === 'search' || shape.type === 'box' || shape.type === 'microservice' || shape.type === 'server' || shape.type === 'api-gateway' || shape.type === 'load-balancer' || shape.type === 'authentication-service' || shape.type === 'notification-service' || shape.type === 'payment-gateway') {
+                  // Mark this as a toolbar update to prevent constant width restoration
+                  if ((editor as any).markToolbarUpdate) {
+                    (editor as any).markToolbarUpdate(shape.id)
+                  }
+                  
+                  editor.updateShape({
+                    id: shape.id,
+                    type: shape.type,
+                    props: {
+                      ...shape.props,
+                      size: newSize, // This controls border width in tldraw
+                    },
+                  })
+                }
+              })
             })
-          }
-        })
-      })
     }
   }, [editor, setBorderWidth])
 
@@ -146,6 +157,37 @@ function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolb
   }, [editor])
 
   const handleTriangle = useCallback(() => {
+    if (!editor) return
+    editor.setCurrentTool('geo')
+  }, [editor])
+
+  // Custom component handlers
+  const handleDatabase = useCallback(() => {
+    if (!editor) return
+    editor.setCurrentTool('geo')
+  }, [editor])
+
+  const handleNoSqlDatabase = useCallback(() => {
+    if (!editor) return
+    editor.setCurrentTool('geo')
+  }, [editor])
+
+  const handleCache = useCallback(() => {
+    if (!editor) return
+    editor.setCurrentTool('geo')
+  }, [editor])
+
+  const handleStorage = useCallback(() => {
+    if (!editor) return
+    editor.setCurrentTool('geo')
+  }, [editor])
+
+  const handleDataWarehouse = useCallback(() => {
+    if (!editor) return
+    editor.setCurrentTool('geo')
+  }, [editor])
+
+  const handleSearchEngine = useCallback(() => {
     if (!editor) return
     editor.setCurrentTool('geo')
   }, [editor])
@@ -224,6 +266,152 @@ function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolb
           >
             <Triangle size={20} />
             <span>Triangle</span>
+          </button>
+        </div>
+      </div>
+
+      <div className="toolbar-divider" />
+
+      <div className="toolbar-section">
+        <h3 className="toolbar-title">Infrastructure</h3>
+        <div className="toolbar-buttons">
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'database')}
+            onClick={handleDatabase}
+            title="Database - Click to select tool or drag to canvas"
+          >
+            <Database size={20} />
+            <span>Database</span>
+          </button>
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'nosql-database')}
+            onClick={handleNoSqlDatabase}
+            title="NoSQL Database - Click to select tool or drag to canvas"
+          >
+            <Box size={20} />
+            <span>NoSQL DB</span>
+          </button>
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'cache')}
+            onClick={handleCache}
+            title="Cache - Click to select tool or drag to canvas"
+          >
+            <HardDrive size={20} />
+            <span>Cache</span>
+          </button>
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'storage')}
+            onClick={handleStorage}
+            title="Storage - Click to select tool or drag to canvas"
+          >
+            <HardDrive size={20} />
+            <span>Storage</span>
+          </button>
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'data-warehouse')}
+            onClick={handleDataWarehouse}
+            title="Data Warehouse - Click to select tool or drag to canvas"
+          >
+            <Database size={20} />
+            <span>Data Warehouse</span>
+          </button>
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'search-engine')}
+            onClick={handleSearchEngine}
+            title="Search Engine - Click to select tool or drag to canvas"
+          >
+            <Search size={20} />
+            <span>Search Engine</span>
+          </button>
+        </div>
+      </div>
+
+      <div className="toolbar-divider" />
+
+      <div className="toolbar-section">
+        <h3 className="toolbar-title">Service Layer</h3>
+        <div className="toolbar-buttons">
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'microservice')}
+            onClick={() => editor?.setCurrentTool('geo')}
+            title="Microservice - Click to select tool or drag to canvas"
+          >
+            <Package size={20} />
+            <span>Microservice</span>
+          </button>
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'server')}
+            onClick={() => editor?.setCurrentTool('geo')}
+            title="Server - Click to select tool or drag to canvas"
+          >
+            <Server size={20} />
+            <span>Server</span>
+          </button>
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'api-gateway')}
+            onClick={() => editor?.setCurrentTool('geo')}
+            title="API Gateway - Click to select tool or drag to canvas"
+          >
+            <Network size={20} />
+            <span>API Gateway</span>
+          </button>
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'load-balancer')}
+            onClick={() => editor?.setCurrentTool('geo')}
+            title="Load Balancer - Click to select tool or drag to canvas"
+          >
+            <Activity size={20} />
+            <span>Load Balancer</span>
+          </button>
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'authentication-service')}
+            onClick={() => editor?.setCurrentTool('geo')}
+            title="Authentication Service - Click to select tool or drag to canvas"
+          >
+            <Lock size={20} />
+            <span>Auth Service</span>
+          </button>
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'notification-service')}
+            onClick={() => editor?.setCurrentTool('geo')}
+            title="Notification Service - Click to select tool or drag to canvas"
+          >
+            <Bell size={20} />
+            <span>Notification</span>
+          </button>
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'payment-gateway')}
+            onClick={() => editor?.setCurrentTool('geo')}
+            title="Payment Gateway - Click to select tool or drag to canvas"
+          >
+            <CreditCard size={20} />
+            <span>Payment Gateway</span>
           </button>
         </div>
       </div>
