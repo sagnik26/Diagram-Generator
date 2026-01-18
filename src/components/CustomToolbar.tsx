@@ -7,10 +7,6 @@ import {
   ArrowRight,
   Minus,
   Type,
-  Save,
-  FolderOpen,
-  Download,
-  FileImage,
   Minus as MinusIcon,
   Plus,
   Trash2,
@@ -48,14 +44,9 @@ import {
 } from 'lucide-react'
 import './CustomToolbar.css'
 
-interface CustomToolbarProps {
-  onSave: () => void
-  onLoad: () => void
-  onExportPNG: () => void
-  onExportSVG: () => void
-}
+interface CustomToolbarProps {}
 
-function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolbarProps) {
+function CustomToolbar({}: CustomToolbarProps) {
   const { editor } = useEditorContext()
   const { borderWidth, setBorderWidth } = useBorderWidthContext()
   
@@ -70,9 +61,7 @@ function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolb
     monitoring: false,
     aiMl: false,
     borderWidth: false,
-    actions: false,
-    file: false,
-    export: false,
+    actions: true,
   })
 
   const toggleSection = useCallback((section: string) => {
@@ -870,77 +859,6 @@ function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolb
         )}
       </div>
 
-      <div className="toolbar-divider" />
-
-      <div className="toolbar-section">
-        <div 
-          className="toolbar-section-header"
-          onClick={() => toggleSection('file')}
-        >
-          <h3 className="toolbar-title">File</h3>
-          {expandedSections.file ? (
-            <ChevronUp size={16} />
-          ) : (
-            <ChevronDown size={16} />
-          )}
-        </div>
-        {expandedSections.file && (
-          <div className="toolbar-buttons">
-          <button
-            className="toolbar-button"
-            onClick={onSave}
-            title="Save Diagram"
-          >
-            <Save size={20} />
-            <span>Save</span>
-          </button>
-          <button
-            className="toolbar-button"
-            onClick={onLoad}
-            title="Load Diagram"
-          >
-            <FolderOpen size={20} />
-            <span>Load</span>
-          </button>
-          </div>
-        )}
-      </div>
-
-      <div className="toolbar-divider" />
-
-      <div className="toolbar-section">
-        <div 
-          className="toolbar-section-header"
-          onClick={() => toggleSection('export')}
-        >
-          <h3 className="toolbar-title">Export</h3>
-          {expandedSections.export ? (
-            <ChevronUp size={16} />
-          ) : (
-            <ChevronDown size={16} />
-          )}
-        </div>
-        {expandedSections.export && (
-          <div className="toolbar-buttons">
-          <button
-            className="toolbar-button"
-            onClick={onExportPNG}
-            title="Export as PNG"
-          >
-            <FileImage size={20} />
-            <span>PNG</span>
-          </button>
-          <button
-            className="toolbar-button"
-            onClick={onExportSVG}
-            title="Export as SVG"
-          >
-            <Download size={20} />
-            <span>SVG</span>
-          </button>
-          </div>
-        )}
-      </div>
     </div>
   )
 }

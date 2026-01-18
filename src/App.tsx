@@ -4,6 +4,7 @@ import '@tldraw/tldraw/tldraw.css'
 import { EditorProvider, useEditorContext } from './contexts/EditorContext'
 import { BorderWidthProvider, useBorderWidthContext } from './contexts/BorderWidthContext'
 import CustomToolbar from './components/CustomToolbar'
+import TopNav from './components/TopNav'
 import ConnectionPoints from './components/ConnectionPoints'
 import TextEditor from './components/TextEditor'
 import DottedBackground from './components/DottedBackground'
@@ -977,13 +978,14 @@ function AppContentInner() {
 
   return (
     <div className="app-container">
+      <TopNav
+        onSave={handleSave}
+        onLoad={handleLoad}
+        onExportPNG={handleExportPNG}
+        onExportSVG={handleExportSVG}
+      />
       <div className="toolbar-container">
-        <CustomToolbar
-          onSave={handleSave}
-          onLoad={handleLoad}
-          onExportPNG={handleExportPNG}
-          onExportSVG={handleExportSVG}
-        />
+        <CustomToolbar />
       </div>
       <div 
         ref={canvasRef}
