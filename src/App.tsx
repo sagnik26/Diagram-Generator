@@ -57,39 +57,63 @@ function setupTextEditing(editor: any) {
   // Store original border sizes to maintain constant width during resize
   const originalBorderSizes = new Map<string, 's' | 'm' | 'l' | 'xl'>()
   const toolbarUpdateTimes = new Map<string, number>()
+  let isDragging = false
+  let rafId: number | null = null
 
-  // Listen for shape updates to maintain constant border width and auto-resize text
+  // Track dragging state to skip updates during drag
+  // Check if editor is currently pointing (dragging)
+  const checkDraggingState = () => {
+    const instanceState = editor.getInstanceState()
+    // Check if cursor indicates dragging/grabbing
+    isDragging = instanceState.cursor.type === 'grabbing' || false
+  }
+
+  // Listen for shape updates to maintain constant border width - optimized for performance
   let lastUpdateTime = 0
   const unsubscribe = editor.store.listen(() => {
-    // Throttle updates to avoid performance issues
+    // Check dragging state
+    checkDraggingState()
+    
+    // Skip updates during dragging for better performance
+    if (isDragging) return
+    
+    // Throttle updates more aggressively
     const now = Date.now()
-    if (now - lastUpdateTime < 100) return
+    if (now - lastUpdateTime < 300) return
     lastUpdateTime = now
 
-    const shapes = editor.getCurrentPageShapes()
-    shapes.forEach((shape: any) => {
-      if (shape.type === 'geo') {
-        // Store original border size if not already stored
-        if (!originalBorderSizes.has(shape.id)) {
-          originalBorderSizes.set(shape.id, shape.props.size || 'm')
-        } else {
-          // Maintain constant border width - restore if changed (unless from toolbar)
-          const originalSize = originalBorderSizes.get(shape.id)!
-          const lastToolbarUpdate = toolbarUpdateTimes.get(shape.id) || 0
-          
-          // Only restore if enough time has passed (not a recent toolbar update)
-          if (shape.props.size !== originalSize && (now - lastToolbarUpdate > 500)) {
-            editor.updateShape({
-              id: shape.id,
-              type: shape.type,
-              props: {
-                ...shape.props,
-                size: originalSize, // Keep border width constant during resize
-              },
-            })
+    // Use requestAnimationFrame to batch updates
+    if (rafId !== null) {
+      cancelAnimationFrame(rafId)
+    }
+
+    rafId = requestAnimationFrame(() => {
+      const shapes = editor.getCurrentPageShapes()
+      shapes.forEach((shape: any) => {
+        if (shape.type === 'geo') {
+          // Store original border size if not already stored
+          if (!originalBorderSizes.has(shape.id)) {
+            originalBorderSizes.set(shape.id, shape.props.size || 'm')
+          } else {
+            // Maintain constant border width - restore if changed (unless from toolbar)
+            const originalSize = originalBorderSizes.get(shape.id)!
+            const lastToolbarUpdate = toolbarUpdateTimes.get(shape.id) || 0
+            
+            // Only restore if enough time has passed (not a recent toolbar update)
+            if (shape.props.size !== originalSize && (Date.now() - lastToolbarUpdate > 500)) {
+              editor.updateShape({
+                id: shape.id,
+                type: shape.type,
+                props: {
+                  ...shape.props,
+                  size: originalSize, // Keep border width constant during resize
+                },
+              })
+            }
           }
         }
-      }
+      })
+      rafId = null
     })
   })
 
@@ -101,6 +125,9 @@ function setupTextEditing(editor: any) {
   return () => {
     unsubscribe()
     window.removeEventListener('keydown', handleKeyDown)
+    if (rafId !== null) {
+      cancelAnimationFrame(rafId)
+    }
   }
 }
 

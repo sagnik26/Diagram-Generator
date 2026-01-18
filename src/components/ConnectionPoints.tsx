@@ -1,41 +1,88 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useEditorContext } from '../contexts/EditorContext'
 import './ConnectionPoints.css'
 
 function ConnectionPoints() {
   const { editor } = useEditorContext()
   const [hoveredShapeId, setHoveredShapeId] = useState<string | null>(null)
+  const rafIdRef = useRef<number | null>(null)
+  const lastUpdateRef = useRef<number>(0)
 
   useEffect(() => {
     if (!editor) return
 
-    const handlePointerMove = () => {
-      const hoveredShapes = editor.getHoveredShapes()
-      if (hoveredShapes.length > 0) {
-        const shape = hoveredShapes[0]
-        // Only show connection points for geo shapes and text
-        if (shape.type === 'geo' || shape.type === 'text') {
-          setHoveredShapeId(shape.id as string)
-        } else {
-          setHoveredShapeId(null)
+    let isDragging = false
+    let dragTimeout: number | null = null
+
+    // Track dragging state by checking editor state
+    const checkDraggingState = () => {
+      try {
+        const instanceState = editor.getInstanceState()
+        // Check if cursor indicates dragging/grabbing or if editor is in pointing state
+        const isCurrentlyDragging = instanceState.cursor.type === 'grabbing' || 
+          instanceState.cursor.type === 'grab' ||
+          (instanceState as any).isPointing === true
+
+        if (isCurrentlyDragging && !isDragging) {
+          isDragging = true
+          setHoveredShapeId(null) // Hide connection points while dragging
+        } else if (!isCurrentlyDragging && isDragging) {
+          // Use a small delay to ensure dragging has ended
+          if (dragTimeout) clearTimeout(dragTimeout)
+          dragTimeout = window.setTimeout(() => {
+            isDragging = false
+          }, 150)
         }
-      } else {
-        setHoveredShapeId(null)
+      } catch (error) {
+        // Fallback: if we can't determine dragging state, just continue
       }
     }
 
-    // Listen to pointer events
+    const handlePointerMove = () => {
+      // Check dragging state
+      checkDraggingState()
+
+      // Skip updates during dragging for better performance
+      if (isDragging) return
+
+      // Throttle updates using requestAnimationFrame
+      const now = Date.now()
+      if (now - lastUpdateRef.current < 100) return
+      lastUpdateRef.current = now
+
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current)
+      }
+
+      rafIdRef.current = requestAnimationFrame(() => {
+        const hoveredShape = editor.getHoveredShape()
+        if (hoveredShape) {
+          // Only show connection points for geo shapes and text
+          if (hoveredShape.type === 'geo' || hoveredShape.type === 'text') {
+            setHoveredShapeId(hoveredShape.id as string)
+          } else {
+            setHoveredShapeId(null)
+          }
+        } else {
+          setHoveredShapeId(null)
+        }
+        rafIdRef.current = null
+      })
+    }
+
+    // Listen to store changes with throttling
     const unsubscribe = editor.store.listen(() => {
       handlePointerMove()
     })
 
-    // Also listen to pointer move events directly
-    const handleMove = () => handlePointerMove()
-    window.addEventListener('mousemove', handleMove)
-
     return () => {
       unsubscribe()
-      window.removeEventListener('mousemove', handleMove)
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current)
+      }
+      if (dragTimeout) {
+        clearTimeout(dragTimeout)
+      }
     }
   }, [editor])
 

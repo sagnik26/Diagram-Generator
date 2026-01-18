@@ -13,13 +13,22 @@
   flex: 1;
   position: relative;
   overflow: hidden;
+  /* Performance optimizations */
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .canvas-container .tl-container {
   width: 100%;
   height: 100%;
+  /* GPU acceleration */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .canvas-container .tl-viewport {
   position: relative;
+  /* Smooth rendering */
+  will-change: transform;
 }

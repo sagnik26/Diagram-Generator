@@ -29,19 +29,39 @@ function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolb
   const { borderWidth, setBorderWidth } = useBorderWidthContext()
   const [hasSelection, setHasSelection] = useState(false)
 
-  // Track selection state to enable/disable delete button
+  // Track selection state to enable/disable delete button - optimized
   useEffect(() => {
     if (!editor) return
 
+    let rafId: number | null = null
+    let lastUpdate = 0
+
     const updateSelection = () => {
-      const selected = editor.getSelectedShapes()
-      setHasSelection(selected.length > 0)
+      // Throttle selection updates
+      const now = Date.now()
+      if (now - lastUpdate < 150) return
+      lastUpdate = now
+
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId)
+      }
+
+      rafId = requestAnimationFrame(() => {
+        const selected = editor.getSelectedShapes()
+        setHasSelection(selected.length > 0)
+        rafId = null
+      })
     }
 
     const unsubscribe = editor.store.listen(updateSelection)
     updateSelection()
 
-    return unsubscribe
+    return () => {
+      unsubscribe()
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId)
+      }
+    }
   }, [editor])
 
   const handleDragStart = useCallback((e: React.DragEvent, shapeType: string) => {
