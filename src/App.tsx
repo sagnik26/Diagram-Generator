@@ -18,6 +18,15 @@ import { LoadBalancerShapeUtil } from './shapes/LoadBalancerShape'
 import { AuthenticationServiceShapeUtil } from './shapes/AuthenticationServiceShape'
 import { NotificationServiceShapeUtil } from './shapes/NotificationServiceShape'
 import { PaymentGatewayShapeUtil } from './shapes/PaymentGatewayShape'
+import { MessageQueueShapeUtil } from './shapes/MessageQueueShape'
+import { MessageBrokerShapeUtil } from './shapes/MessageBrokerShape'
+import { StreamProcessorShapeUtil } from './shapes/StreamProcessorShape'
+import { EventBusShapeUtil } from './shapes/EventBusShape'
+import { CdnShapeUtil } from './shapes/CdnShape'
+import { DnsShapeUtil } from './shapes/DnsShape'
+import { FirewallShapeUtil } from './shapes/FirewallShape'
+import { VpnShapeUtil } from './shapes/VpnShape'
+import { ContainerShapeUtil } from './shapes/ContainerShape'
 import './App.css'
 
 // Map border width (1-10) to tldraw size ('s', 'm', 'l', 'xl')
@@ -37,7 +46,7 @@ function setupTextEditing(editor: any) {
       margin: 0,
     })
 
-    if (hitShape && (hitShape.type === 'geo' || hitShape.type === 'text' || hitShape.type === 'cylinder' || hitShape.type === 'hard-drive' || hitShape.type === 'search' || hitShape.type === 'box' || hitShape.type === 'microservice' || hitShape.type === 'server' || hitShape.type === 'api-gateway' || hitShape.type === 'load-balancer' || hitShape.type === 'authentication-service' || hitShape.type === 'notification-service' || hitShape.type === 'payment-gateway')) {
+    if (hitShape && (hitShape.type === 'geo' || hitShape.type === 'text' || hitShape.type === 'cylinder' || hitShape.type === 'hard-drive' || hitShape.type === 'search' || hitShape.type === 'box' || hitShape.type === 'microservice' || hitShape.type === 'server' || hitShape.type === 'api-gateway' || hitShape.type === 'load-balancer' || hitShape.type === 'authentication-service' || hitShape.type === 'notification-service' || hitShape.type === 'payment-gateway' || hitShape.type === 'message-queue' || hitShape.type === 'message-broker' || hitShape.type === 'stream-processor' || hitShape.type === 'event-bus' || hitShape.type === 'cdn' || hitShape.type === 'dns' || hitShape.type === 'firewall' || hitShape.type === 'vpn' || hitShape.type === 'container')) {
       editor.setEditingShape(hitShape.id)
       editor.setCurrentTool('select')
     }
@@ -600,6 +609,159 @@ function AppContentInner() {
             text: 'Payment Gateway',
           },
         }
+      } else if (shapeType === 'message-queue') {
+        // MESSAGE_QUEUE: Custom message queue shape (parallelogram), size 140x80
+        shapeDef = {
+          id: shapeId,
+          type: 'message-queue',
+          x: point.x - 70,
+          y: point.y - 40,
+          props: {
+            w: 140,
+            h: 80,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'Message Queue',
+          },
+        }
+      } else if (shapeType === 'message-broker') {
+        // MESSAGE_BROKER: Custom message broker shape (parallelogram), size 160x80
+        shapeDef = {
+          id: shapeId,
+          type: 'message-broker',
+          x: point.x - 80,
+          y: point.y - 40,
+          props: {
+            w: 160,
+            h: 80,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'Message Broker',
+          },
+        }
+      } else if (shapeType === 'stream-processor') {
+        // STREAM_PROCESSOR: Custom stream processor shape (parallelogram), size 160x80
+        shapeDef = {
+          id: shapeId,
+          type: 'stream-processor',
+          x: point.x - 80,
+          y: point.y - 40,
+          props: {
+            w: 160,
+            h: 80,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'Stream Processor',
+          },
+        }
+      } else if (shapeType === 'event-bus') {
+        // EVENT_BUS: Custom event bus shape (parallelogram), size 140x80
+        shapeDef = {
+          id: shapeId,
+          type: 'event-bus',
+          x: point.x - 70,
+          y: point.y - 40,
+          props: {
+            w: 140,
+            h: 80,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'Event Bus',
+          },
+        }
+      } else if (shapeType === 'cdn') {
+        // CDN: Custom CDN shape (cloud), size 140x100
+        shapeDef = {
+          id: shapeId,
+          type: 'cdn',
+          x: point.x - 70,
+          y: point.y - 50,
+          props: {
+            w: 140,
+            h: 100,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'CDN',
+          },
+        }
+      } else if (shapeType === 'dns') {
+        // DNS: Custom DNS shape (diamond), size 100x100
+        shapeDef = {
+          id: shapeId,
+          type: 'dns',
+          x: point.x - 50,
+          y: point.y - 50,
+          props: {
+            w: 100,
+            h: 100,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'DNS',
+          },
+        }
+      } else if (shapeType === 'firewall') {
+        // FIREWALL: Custom firewall shape (shield), size 100x100
+        shapeDef = {
+          id: shapeId,
+          type: 'firewall',
+          x: point.x - 50,
+          y: point.y - 50,
+          props: {
+            w: 100,
+            h: 100,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'Firewall',
+          },
+        }
+      } else if (shapeType === 'vpn') {
+        // VPN: Custom VPN shape (shield), size 100x100
+        shapeDef = {
+          id: shapeId,
+          type: 'vpn',
+          x: point.x - 50,
+          y: point.y - 50,
+          props: {
+            w: 100,
+            h: 100,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'VPN',
+          },
+        }
+      } else if (shapeType === 'container') {
+        // CONTAINER: Custom container shape (rectangle), size 120x80
+        shapeDef = {
+          id: shapeId,
+          type: 'container',
+          x: point.x - 60,
+          y: point.y - 40,
+          props: {
+            w: 120,
+            h: 80,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'Container',
+          },
+        }
       } else {
         return
       }
@@ -644,7 +806,16 @@ function AppContentInner() {
             LoadBalancerShapeUtil,
             AuthenticationServiceShapeUtil,
             NotificationServiceShapeUtil,
-            PaymentGatewayShapeUtil
+            PaymentGatewayShapeUtil,
+            MessageQueueShapeUtil,
+            MessageBrokerShapeUtil,
+            StreamProcessorShapeUtil,
+            EventBusShapeUtil,
+            CdnShapeUtil,
+            DnsShapeUtil,
+            FirewallShapeUtil,
+            VpnShapeUtil,
+            ContainerShapeUtil
           ]}
           onMount={(editor) => {
             setEditor(editor)

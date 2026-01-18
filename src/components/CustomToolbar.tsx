@@ -26,6 +26,14 @@ import {
   Lock,
   Bell,
   CreditCard,
+  MessageSquare,
+  MessageCircle,
+  Zap,
+  Radio,
+  Cloud,
+  Globe,
+  Shield,
+  ShieldCheck,
 } from 'lucide-react'
 import './CustomToolbar.css'
 
@@ -101,7 +109,7 @@ function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolb
             const newSize = getSizeFromWidth(clampedWidth)
             editor.batch(() => {
               selectedShapes.forEach((shape) => {
-                if (shape.type === 'geo' || shape.type === 'cylinder' || shape.type === 'hard-drive' || shape.type === 'search' || shape.type === 'box' || shape.type === 'microservice' || shape.type === 'server' || shape.type === 'api-gateway' || shape.type === 'load-balancer' || shape.type === 'authentication-service' || shape.type === 'notification-service' || shape.type === 'payment-gateway') {
+                if (shape.type === 'geo' || shape.type === 'cylinder' || shape.type === 'hard-drive' || shape.type === 'search' || shape.type === 'box' || shape.type === 'microservice' || shape.type === 'server' || shape.type === 'api-gateway' || shape.type === 'load-balancer' || shape.type === 'authentication-service' || shape.type === 'notification-service' || shape.type === 'payment-gateway' || shape.type === 'message-queue' || shape.type === 'message-broker' || shape.type === 'stream-processor' || shape.type === 'event-bus' || shape.type === 'cdn' || shape.type === 'dns' || shape.type === 'firewall' || shape.type === 'vpn' || shape.type === 'container') {
                   // Mark this as a toolbar update to prevent constant width restoration
                   if ((editor as any).markToolbarUpdate) {
                     (editor as any).markToolbarUpdate(shape.id)
@@ -412,6 +420,112 @@ function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolb
           >
             <CreditCard size={20} />
             <span>Payment Gateway</span>
+          </button>
+        </div>
+      </div>
+
+      <div className="toolbar-divider" />
+
+      <div className="toolbar-section">
+        <h3 className="toolbar-title">Messaging & Streaming</h3>
+        <div className="toolbar-buttons">
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'message-queue')}
+            onClick={() => editor?.setCurrentTool('geo')}
+            title="Message Queue - Click to select tool or drag to canvas"
+          >
+            <MessageSquare size={20} />
+            <span>Message Queue</span>
+          </button>
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'message-broker')}
+            onClick={() => editor?.setCurrentTool('geo')}
+            title="Message Broker - Click to select tool or drag to canvas"
+          >
+            <MessageCircle size={20} />
+            <span>Message Broker</span>
+          </button>
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'stream-processor')}
+            onClick={() => editor?.setCurrentTool('geo')}
+            title="Stream Processor - Click to select tool or drag to canvas"
+          >
+            <Zap size={20} />
+            <span>Stream Processor</span>
+          </button>
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'event-bus')}
+            onClick={() => editor?.setCurrentTool('geo')}
+            title="Event Bus - Click to select tool or drag to canvas"
+          >
+            <Radio size={20} />
+            <span>Event Bus</span>
+          </button>
+        </div>
+      </div>
+
+      <div className="toolbar-divider" />
+
+      <div className="toolbar-section">
+        <h3 className="toolbar-title">Infrastructure</h3>
+        <div className="toolbar-buttons">
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'cdn')}
+            onClick={() => editor?.setCurrentTool('geo')}
+            title="CDN - Click to select tool or drag to canvas"
+          >
+            <Cloud size={20} />
+            <span>CDN</span>
+          </button>
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'dns')}
+            onClick={() => editor?.setCurrentTool('geo')}
+            title="DNS - Click to select tool or drag to canvas"
+          >
+            <Globe size={20} />
+            <span>DNS</span>
+          </button>
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'firewall')}
+            onClick={() => editor?.setCurrentTool('geo')}
+            title="Firewall - Click to select tool or drag to canvas"
+          >
+            <Shield size={20} />
+            <span>Firewall</span>
+          </button>
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'vpn')}
+            onClick={() => editor?.setCurrentTool('geo')}
+            title="VPN - Click to select tool or drag to canvas"
+          >
+            <ShieldCheck size={20} />
+            <span>VPN</span>
+          </button>
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'container')}
+            onClick={() => editor?.setCurrentTool('geo')}
+            title="Container - Click to select tool or drag to canvas"
+          >
+            <Box size={20} />
+            <span>Container</span>
           </button>
         </div>
       </div>

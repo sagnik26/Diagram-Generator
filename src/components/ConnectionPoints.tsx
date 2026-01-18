@@ -58,7 +58,7 @@ function ConnectionPoints() {
         const hoveredShape = editor.getHoveredShape()
         if (hoveredShape) {
           // Only show connection points for geo shapes, cylinder shapes, and text
-          if (hoveredShape.type === 'geo' || hoveredShape.type === 'cylinder' || hoveredShape.type === 'hard-drive' || hoveredShape.type === 'search' || hoveredShape.type === 'box' || hoveredShape.type === 'microservice' || hoveredShape.type === 'server' || hoveredShape.type === 'api-gateway' || hoveredShape.type === 'load-balancer' || hoveredShape.type === 'authentication-service' || hoveredShape.type === 'notification-service' || hoveredShape.type === 'payment-gateway' || hoveredShape.type === 'text') {
+          if (hoveredShape.type === 'geo' || hoveredShape.type === 'cylinder' || hoveredShape.type === 'hard-drive' || hoveredShape.type === 'search' || hoveredShape.type === 'box' || hoveredShape.type === 'microservice' || hoveredShape.type === 'server' || hoveredShape.type === 'api-gateway' || hoveredShape.type === 'load-balancer' || hoveredShape.type === 'authentication-service' || hoveredShape.type === 'notification-service' || hoveredShape.type === 'payment-gateway' || hoveredShape.type === 'message-queue' || hoveredShape.type === 'message-broker' || hoveredShape.type === 'stream-processor' || hoveredShape.type === 'event-bus' || hoveredShape.type === 'cdn' || hoveredShape.type === 'dns' || hoveredShape.type === 'firewall' || hoveredShape.type === 'vpn' || hoveredShape.type === 'container' || hoveredShape.type === 'text') {
             setHoveredShapeId(hoveredShape.id as string)
           } else {
             setHoveredShapeId(null)
