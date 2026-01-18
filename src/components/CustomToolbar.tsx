@@ -34,6 +34,14 @@ import {
   Globe,
   Shield,
   ShieldCheck,
+  User,
+  Smartphone,
+  Monitor,
+  Eye,
+  FileText,
+  BarChart,
+  Brain,
+  GitBranch,
 } from 'lucide-react'
 import './CustomToolbar.css'
 
@@ -109,7 +117,7 @@ function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolb
             const newSize = getSizeFromWidth(clampedWidth)
             editor.batch(() => {
               selectedShapes.forEach((shape) => {
-                if (shape.type === 'geo' || shape.type === 'cylinder' || shape.type === 'hard-drive' || shape.type === 'search' || shape.type === 'box' || shape.type === 'microservice' || shape.type === 'server' || shape.type === 'api-gateway' || shape.type === 'load-balancer' || shape.type === 'authentication-service' || shape.type === 'notification-service' || shape.type === 'payment-gateway' || shape.type === 'message-queue' || shape.type === 'message-broker' || shape.type === 'stream-processor' || shape.type === 'event-bus' || shape.type === 'cdn' || shape.type === 'dns' || shape.type === 'firewall' || shape.type === 'vpn' || shape.type === 'container') {
+                if (shape.type === 'geo' || shape.type === 'cylinder' || shape.type === 'hard-drive' || shape.type === 'search' || shape.type === 'box' || shape.type === 'microservice' || shape.type === 'server' || shape.type === 'api-gateway' || shape.type === 'load-balancer' || shape.type === 'authentication-service' || shape.type === 'notification-service' || shape.type === 'payment-gateway' || shape.type === 'message-queue' || shape.type === 'message-broker' || shape.type === 'stream-processor' || shape.type === 'event-bus' || shape.type === 'cdn' || shape.type === 'dns' || shape.type === 'firewall' || shape.type === 'vpn' || shape.type === 'container' || shape.type === 'client' || shape.type === 'mobile-app' || shape.type === 'web-app' || shape.type === 'admin-panel' || shape.type === 'iot-device' || shape.type === 'monitoring' || shape.type === 'logging' || shape.type === 'alerting' || shape.type === 'analytics' || shape.type === 'ml-model' || shape.type === 'ml-pipeline') {
                   // Mark this as a toolbar update to prevent constant width restoration
                   if ((editor as any).markToolbarUpdate) {
                     (editor as any).markToolbarUpdate(shape.id)
@@ -281,7 +289,7 @@ function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolb
       <div className="toolbar-divider" />
 
       <div className="toolbar-section">
-        <h3 className="toolbar-title">Infrastructure</h3>
+        <h3 className="toolbar-title">Database</h3>
         <div className="toolbar-buttons">
           <button
             className="toolbar-button"
@@ -526,6 +534,140 @@ function CustomToolbar({ onSave, onLoad, onExportPNG, onExportSVG }: CustomToolb
           >
             <Box size={20} />
             <span>Container</span>
+          </button>
+        </div>
+      </div>
+
+      <div className="toolbar-divider" />
+
+      <div className="toolbar-section">
+        <h3 className="toolbar-title">Client Layer</h3>
+        <div className="toolbar-buttons">
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'client')}
+            onClick={() => editor?.setCurrentTool('geo')}
+            title="Client - Click to select tool or drag to canvas"
+          >
+            <User size={20} />
+            <span>Client</span>
+          </button>
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'mobile-app')}
+            onClick={() => editor?.setCurrentTool('geo')}
+            title="Mobile App - Click to select tool or drag to canvas"
+          >
+            <Smartphone size={20} />
+            <span>Mobile App</span>
+          </button>
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'web-app')}
+            onClick={() => editor?.setCurrentTool('geo')}
+            title="Web App - Click to select tool or drag to canvas"
+          >
+            <Monitor size={20} />
+            <span>Web App</span>
+          </button>
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'admin-panel')}
+            onClick={() => editor?.setCurrentTool('geo')}
+            title="Admin Panel - Click to select tool or drag to canvas"
+          >
+            <Monitor size={20} />
+            <span>Admin Panel</span>
+          </button>
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'iot-device')}
+            onClick={() => editor?.setCurrentTool('geo')}
+            title="IoT Device - Click to select tool or drag to canvas"
+          >
+            <Radio size={20} />
+            <span>IoT Device</span>
+          </button>
+        </div>
+      </div>
+
+      <div className="toolbar-divider" />
+
+      <div className="toolbar-section">
+        <h3 className="toolbar-title">Monitoring & Operations</h3>
+        <div className="toolbar-buttons">
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'monitoring')}
+            onClick={() => editor?.setCurrentTool('geo')}
+            title="Monitoring - Click to select tool or drag to canvas"
+          >
+            <Eye size={20} />
+            <span>Monitoring</span>
+          </button>
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'logging')}
+            onClick={() => editor?.setCurrentTool('geo')}
+            title="Logging - Click to select tool or drag to canvas"
+          >
+            <FileText size={20} />
+            <span>Logging</span>
+          </button>
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'alerting')}
+            onClick={() => editor?.setCurrentTool('geo')}
+            title="Alerting - Click to select tool or drag to canvas"
+          >
+            <Bell size={20} />
+            <span>Alerting</span>
+          </button>
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'analytics')}
+            onClick={() => editor?.setCurrentTool('geo')}
+            title="Analytics - Click to select tool or drag to canvas"
+          >
+            <BarChart size={20} />
+            <span>Analytics</span>
+          </button>
+        </div>
+      </div>
+
+      <div className="toolbar-divider" />
+
+      <div className="toolbar-section">
+        <h3 className="toolbar-title">AI/ML</h3>
+        <div className="toolbar-buttons">
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'ml-model')}
+            onClick={() => editor?.setCurrentTool('geo')}
+            title="ML Model - Click to select tool or drag to canvas"
+          >
+            <Brain size={20} />
+            <span>ML Model</span>
+          </button>
+          <button
+            className="toolbar-button"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'ml-pipeline')}
+            onClick={() => editor?.setCurrentTool('geo')}
+            title="ML Pipeline - Click to select tool or drag to canvas"
+          >
+            <GitBranch size={20} />
+            <span>ML Pipeline</span>
           </button>
         </div>
       </div>

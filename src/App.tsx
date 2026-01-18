@@ -27,6 +27,17 @@ import { DnsShapeUtil } from './shapes/DnsShape'
 import { FirewallShapeUtil } from './shapes/FirewallShape'
 import { VpnShapeUtil } from './shapes/VpnShape'
 import { ContainerShapeUtil } from './shapes/ContainerShape'
+import { ClientShapeUtil } from './shapes/ClientShape'
+import { MobileAppShapeUtil } from './shapes/MobileAppShape'
+import { WebAppShapeUtil } from './shapes/WebAppShape'
+import { AdminPanelShapeUtil } from './shapes/AdminPanelShape'
+import { IotDeviceShapeUtil } from './shapes/IotDeviceShape'
+import { MonitoringShapeUtil } from './shapes/MonitoringShape'
+import { LoggingShapeUtil } from './shapes/LoggingShape'
+import { AlertingShapeUtil } from './shapes/AlertingShape'
+import { AnalyticsShapeUtil } from './shapes/AnalyticsShape'
+import { MlModelShapeUtil } from './shapes/MlModelShape'
+import { MlPipelineShapeUtil } from './shapes/MlPipelineShape'
 import './App.css'
 
 // Map border width (1-10) to tldraw size ('s', 'm', 'l', 'xl')
@@ -762,6 +773,193 @@ function AppContentInner() {
             text: 'Container',
           },
         }
+      } else if (shapeType === 'client') {
+        // CLIENT: Custom client shape (ellipse), size 100x100
+        shapeDef = {
+          id: shapeId,
+          type: 'client',
+          x: point.x - 50,
+          y: point.y - 50,
+          props: {
+            w: 100,
+            h: 100,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'Client',
+          },
+        }
+      } else if (shapeType === 'mobile-app') {
+        // MOBILE_APP: Custom mobile app shape (phone), size 80x120
+        shapeDef = {
+          id: shapeId,
+          type: 'mobile-app',
+          x: point.x - 40,
+          y: point.y - 60,
+          props: {
+            w: 80,
+            h: 120,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'Mobile App',
+          },
+        }
+      } else if (shapeType === 'web-app') {
+        // WEB_APP: Custom web app shape (monitor), size 120x100
+        shapeDef = {
+          id: shapeId,
+          type: 'web-app',
+          x: point.x - 60,
+          y: point.y - 50,
+          props: {
+            w: 120,
+            h: 100,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'Web App',
+          },
+        }
+      } else if (shapeType === 'admin-panel') {
+        // ADMIN_PANEL: Custom admin panel shape (monitor), size 120x100
+        shapeDef = {
+          id: shapeId,
+          type: 'admin-panel',
+          x: point.x - 60,
+          y: point.y - 50,
+          props: {
+            w: 120,
+            h: 100,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'Admin Panel',
+          },
+        }
+      } else if (shapeType === 'iot-device') {
+        // IOT_DEVICE: Custom IoT device shape (circle), size 80x80
+        shapeDef = {
+          id: shapeId,
+          type: 'iot-device',
+          x: point.x - 40,
+          y: point.y - 40,
+          props: {
+            w: 80,
+            h: 80,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'IoT Device',
+          },
+        }
+      } else if (shapeType === 'monitoring') {
+        // MONITORING: Custom monitoring shape (eye), size 100x80
+        shapeDef = {
+          id: shapeId,
+          type: 'monitoring',
+          x: point.x - 50,
+          y: point.y - 40,
+          props: {
+            w: 100,
+            h: 80,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'Monitoring',
+          },
+        }
+      } else if (shapeType === 'logging') {
+        // LOGGING: Custom logging shape (file), size 100x80
+        shapeDef = {
+          id: shapeId,
+          type: 'logging',
+          x: point.x - 50,
+          y: point.y - 40,
+          props: {
+            w: 100,
+            h: 80,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'Logging',
+          },
+        }
+      } else if (shapeType === 'alerting') {
+        // ALERTING: Custom alerting shape (bell), size 100x80
+        shapeDef = {
+          id: shapeId,
+          type: 'alerting',
+          x: point.x - 50,
+          y: point.y - 40,
+          props: {
+            w: 100,
+            h: 80,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'Alerting',
+          },
+        }
+      } else if (shapeType === 'analytics') {
+        // ANALYTICS: Custom analytics shape (chart), size 120x80
+        shapeDef = {
+          id: shapeId,
+          type: 'analytics',
+          x: point.x - 60,
+          y: point.y - 40,
+          props: {
+            w: 120,
+            h: 80,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'Analytics',
+          },
+        }
+      } else if (shapeType === 'ml-model') {
+        // ML_MODEL: Custom ML model shape (rectangle), size 140x80
+        shapeDef = {
+          id: shapeId,
+          type: 'ml-model',
+          x: point.x - 70,
+          y: point.y - 40,
+          props: {
+            w: 140,
+            h: 80,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'ML Model',
+          },
+        }
+      } else if (shapeType === 'ml-pipeline') {
+        // ML_PIPELINE: Custom ML pipeline shape (rectangle), size 160x80
+        shapeDef = {
+          id: shapeId,
+          type: 'ml-pipeline',
+          x: point.x - 80,
+          y: point.y - 40,
+          props: {
+            w: 160,
+            h: 80,
+            fill: 'none',
+            dash: 'draw',
+            size: borderSize,
+            color: 'black',
+            text: 'ML Pipeline',
+          },
+        }
       } else {
         return
       }
@@ -815,7 +1013,18 @@ function AppContentInner() {
             DnsShapeUtil,
             FirewallShapeUtil,
             VpnShapeUtil,
-            ContainerShapeUtil
+            ContainerShapeUtil,
+            ClientShapeUtil,
+            MobileAppShapeUtil,
+            WebAppShapeUtil,
+            AdminPanelShapeUtil,
+            IotDeviceShapeUtil,
+            MonitoringShapeUtil,
+            LoggingShapeUtil,
+            AlertingShapeUtil,
+            AnalyticsShapeUtil,
+            MlModelShapeUtil,
+            MlPipelineShapeUtil
           ]}
           onMount={(editor) => {
             setEditor(editor)
