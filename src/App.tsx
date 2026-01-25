@@ -1,5 +1,5 @@
 import { useCallback, useRef } from 'react'
-import { Tldraw, createShapeId } from '@tldraw/tldraw'
+import { Tldraw, createShapeId, Editor, TLShape, TLShapeId } from '@tldraw/tldraw'
 import '@tldraw/tldraw/tldraw.css'
 import { EditorProvider, useEditorContext } from './contexts/EditorContext'
 import { BorderWidthProvider, useBorderWidthContext } from './contexts/BorderWidthContext'
@@ -39,6 +39,7 @@ import { AlertingShapeUtil } from './shapes/AlertingShape'
 import { AnalyticsShapeUtil } from './shapes/AnalyticsShape'
 import { MlModelShapeUtil } from './shapes/MlModelShape'
 import { MlPipelineShapeUtil } from './shapes/MlPipelineShape'
+import { MessageThreadFull } from './components/message-thread-full'
 import './App.css'
 
 // Map border width (1-10) to tldraw size ('s', 'm', 'l', 'xl')
@@ -50,9 +51,10 @@ const getSizeFromWidth = (width: number): 's' | 'm' | 'l' | 'xl' => {
 }
 
 // Setup text editing functionality, border width management, and delete functionality
-function setupTextEditing(editor: any) {
+function setupTextEditing(editor: Editor) {
   // Handle double-click for text editing
-  editor.on('double-click', (e: any) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  editor.on('double-click' as any, (e: { point: { x: number; y: number } }) => {
     const hitShape = editor.getShapeAtPoint(e.point, {
       hitInside: true,
       margin: 0,
@@ -79,7 +81,7 @@ function setupTextEditing(editor: any) {
       const selectedShapes = editor.getSelectedShapes()
       if (selectedShapes.length > 0) {
         e.preventDefault()
-        const shapeIds = selectedShapes.map((shape: any) => shape.id)
+        const shapeIds = selectedShapes.map((shape: TLShape) => shape.id)
         editor.deleteShapes(shapeIds)
       }
     }
@@ -122,23 +124,25 @@ function setupTextEditing(editor: any) {
 
     rafId = requestAnimationFrame(() => {
       const shapes = editor.getCurrentPageShapes()
-      shapes.forEach((shape: any) => {
+      shapes.forEach((shape: TLShape) => {
         if (shape.type === 'geo' || shape.type === 'cylinder' || shape.type === 'hard-drive' || shape.type === 'search' || shape.type === 'box' || shape.type === 'microservice' || shape.type === 'server' || shape.type === 'api-gateway' || shape.type === 'load-balancer' || shape.type === 'authentication-service' || shape.type === 'notification-service' || shape.type === 'payment-gateway') {
           // Store original border size if not already stored
+          // Type assertion for shapes with size property
+          const shapeWithSize = shape as TLShape & { props: { size?: 's' | 'm' | 'l' | 'xl' } }
           if (!originalBorderSizes.has(shape.id)) {
-            originalBorderSizes.set(shape.id, shape.props.size || 'm')
+            originalBorderSizes.set(shape.id, shapeWithSize.props.size || 'm')
           } else {
             // Maintain constant border width - restore if changed (unless from toolbar)
             const originalSize = originalBorderSizes.get(shape.id)!
             const lastToolbarUpdate = toolbarUpdateTimes.get(shape.id) || 0
             
             // Only restore if enough time has passed (not a recent toolbar update)
-            if (shape.props.size !== originalSize && (Date.now() - lastToolbarUpdate > 500)) {
+            if (shapeWithSize.props.size !== originalSize && (Date.now() - lastToolbarUpdate > 500)) {
               editor.updateShape({
                 id: shape.id,
                 type: shape.type,
                 props: {
-                  ...shape.props,
+                  ...shapeWithSize.props,
                   size: originalSize, // Keep border width constant during resize
                 },
               })
@@ -151,7 +155,11 @@ function setupTextEditing(editor: any) {
   })
 
   // Expose method to mark toolbar updates
-  ;(editor as any).markToolbarUpdate = (shapeId: string) => {
+  // Extend editor with custom method for toolbar updates
+  const editorWithCustomMethod = editor as Editor & {
+    markToolbarUpdate: (shapeId: string) => void
+  }
+  editorWithCustomMethod.markToolbarUpdate = (shapeId: string) => {
     toolbarUpdateTimes.set(shapeId, Date.now())
   }
 
@@ -327,10 +335,16 @@ function AppContentInner() {
       }
 
       // Generate a unique ID for the shape
-      const shapeId = createShapeId()
+      const shapeId: TLShapeId = createShapeId()
 
       // Create the shape based on type
-      let shapeDef: any
+      let shapeDef: {
+        id: TLShapeId
+        type: string
+        x: number
+        y: number
+        props: Record<string, unknown>
+      }
 
       // Get border size from current border width setting
       const borderSize = getSizeFromWidth(borderWidth)
@@ -977,69 +991,74 @@ function AppContentInner() {
   }, [editor, borderWidth])
 
   return (
-    <div className="app-container">
-      <TopNav
-        onSave={handleSave}
-        onLoad={handleLoad}
-        onExportPNG={handleExportPNG}
-        onExportSVG={handleExportSVG}
-      />
-      <div className="toolbar-container">
-        <CustomToolbar />
-      </div>
-      <div 
-        ref={canvasRef}
-        className="canvas-container"
-        onDragOver={handleDragOver}
-        onDrop={handleDrop}
-      >
-        <DottedBackground />
-        <Tldraw
-          shapeUtils={[
-            CylinderShapeUtil, 
-            HardDriveShapeUtil, 
-            SearchShapeUtil, 
-            BoxShapeUtil,
-            MicroserviceShapeUtil,
-            ServerShapeUtil,
-            ApiGatewayShapeUtil,
-            LoadBalancerShapeUtil,
-            AuthenticationServiceShapeUtil,
-            NotificationServiceShapeUtil,
-            PaymentGatewayShapeUtil,
-            MessageQueueShapeUtil,
-            MessageBrokerShapeUtil,
-            StreamProcessorShapeUtil,
-            EventBusShapeUtil,
-            CdnShapeUtil,
-            DnsShapeUtil,
-            FirewallShapeUtil,
-            VpnShapeUtil,
-            ContainerShapeUtil,
-            ClientShapeUtil,
-            MobileAppShapeUtil,
-            WebAppShapeUtil,
-            AdminPanelShapeUtil,
-            IotDeviceShapeUtil,
-            MonitoringShapeUtil,
-            LoggingShapeUtil,
-            AlertingShapeUtil,
-            AnalyticsShapeUtil,
-            MlModelShapeUtil,
-            MlPipelineShapeUtil
-          ]}
-          onMount={(editor) => {
-            setEditor(editor)
-            // Configure editor for connections
-            editor.updateInstanceState({ isGridMode: false })
-            
-            // Set up text editing and auto-sizing
-            setupTextEditing(editor)
-          }}
-          hideUi
+    <div className="app-container" style={{ display: 'flex', height: '100vh' }}>
+      <div style={{ flex: '1', display: 'flex', flexDirection: 'column' }}>
+        <TopNav
+          onSave={handleSave}
+          onLoad={handleLoad}
+          onExportPNG={handleExportPNG}
+          onExportSVG={handleExportSVG}
         />
-        <ConnectionPoints />
-        <TextEditor />
+        <div className="toolbar-container">
+          <CustomToolbar />
+        </div>
+        <div 
+          ref={canvasRef}
+          className="canvas-container"
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+        >
+          <DottedBackground />
+          <Tldraw
+            shapeUtils={[
+              CylinderShapeUtil, 
+              HardDriveShapeUtil, 
+              SearchShapeUtil, 
+              BoxShapeUtil,
+              MicroserviceShapeUtil,
+              ServerShapeUtil,
+              ApiGatewayShapeUtil,
+              LoadBalancerShapeUtil,
+              AuthenticationServiceShapeUtil,
+              NotificationServiceShapeUtil,
+              PaymentGatewayShapeUtil,
+              MessageQueueShapeUtil,
+              MessageBrokerShapeUtil,
+              StreamProcessorShapeUtil,
+              EventBusShapeUtil,
+              CdnShapeUtil,
+              DnsShapeUtil,
+              FirewallShapeUtil,
+              VpnShapeUtil,
+              ContainerShapeUtil,
+              ClientShapeUtil,
+              MobileAppShapeUtil,
+              WebAppShapeUtil,
+              AdminPanelShapeUtil,
+              IotDeviceShapeUtil,
+              MonitoringShapeUtil,
+              LoggingShapeUtil,
+              AlertingShapeUtil,
+              AnalyticsShapeUtil,
+              MlModelShapeUtil,
+              MlPipelineShapeUtil
+            ]}
+            onMount={(editor) => {
+              setEditor(editor)
+              // Configure editor for connections
+              editor.updateInstanceState({ isGridMode: false })
+              
+              // Set up text editing and auto-sizing
+              setupTextEditing(editor)
+            }}
+            hideUi
+          />
+          <ConnectionPoints />
+          <TextEditor />
+        </div>
+      </div>
+      <div style={{ width: '400px', borderLeft: '1px solid #e0e0e0', display: 'flex', flexDirection: 'column' }}>
+        <MessageThreadFull />
       </div>
     </div>
   )

@@ -1,10 +1,18 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { TamboProvider } from "@tambo-ai/react";
+import { components } from "./lib/tambo";
+import App from "./App.tsx";
+import "./app/globals.css";
+import "./index.css";
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <App />
+    <TamboProvider
+      apiKey={import.meta.env.VITE_TAMBO_API_KEY ?? ""}
+      components={components}
+    >
+      <App />
+    </TamboProvider>
   </React.StrictMode>,
-)
+);

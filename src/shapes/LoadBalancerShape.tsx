@@ -96,8 +96,6 @@ export class LoadBalancerShapeUtil extends BaseBoxShapeUtil<LoadBalancerShape> {
     // Diamond indicator - rotated square
     const centerX = w / 2
     const centerY = h / 2
-    const halfWidth = w / 2
-    const halfHeight = h / 2
     return (
       <path
         d={`M ${centerX} 0 L ${w} ${centerY} L ${centerX} ${h} L 0 ${centerY} Z`}
