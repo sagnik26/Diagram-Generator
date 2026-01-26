@@ -3,7 +3,7 @@
 import {
   Tooltip,
   TooltipProvider,
-} from "@/components/message-suggestions";
+} from "@/components/tambo/message-suggestions";
 import { cn } from "@/lib/utils";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import {
@@ -345,6 +345,7 @@ export interface McpResourceButtonProps extends React.ButtonHTMLAttributes<HTMLB
 export const McpResourceButton = React.forwardRef<
   HTMLButtonElement,
   McpResourceButtonProps
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
 >(({ className, onInsertResource, value: _value, ...props }, ref) => {
   const { data: resourceList, isLoading } = useTamboMcpResourceList();
   const [isOpen, setIsOpen] = React.useState(false);

@@ -1,15 +1,15 @@
 "use client";
 
-import { ElicitationUI } from "@/components/elicitation-ui";
+import { ElicitationUI } from "@/components/tambo/elicitation-ui";
 import {
   McpPromptButton,
   McpResourceButton,
-} from "@/components/mcp-components";
+} from "@/components/tambo/mcp-components";
 import { McpConfigModal } from "./mcp-config-modal";
 import {
   Tooltip,
   TooltipProvider,
-} from "@/components/message-suggestions";
+} from "@/components/tambo/message-suggestions";
 import { cn } from "@/lib/utils";
 import {
   useIsTamboTokenUpdating,
@@ -784,6 +784,7 @@ const MessageInputTextarea = ({
   // Resource names are extracted from editor at submit time, no need to track in state
   const setResourceNames = React.useCallback(
     (
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       _resourceNames:
         | Record<string, string>
         | ((prev: Record<string, string>) => Record<string, string>),

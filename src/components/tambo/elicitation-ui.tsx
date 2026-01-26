@@ -157,6 +157,7 @@ const StringField: React.FC<FieldProps> = ({
 
   const inputType = getInputType();
   const hasError = !!validationError;
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const inputId = React.useId();
   const errorId = `${inputId}-error`;
 
@@ -212,6 +213,7 @@ const NumberField: React.FC<FieldProps> = ({
   const numberSchema = schema;
   const numberValue = value as number | undefined;
   const hasError = !!validationError;
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const inputId = React.useId();
   const errorId = `${inputId}-error`;
 
